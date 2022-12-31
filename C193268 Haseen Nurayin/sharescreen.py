@@ -1,20 +1,3 @@
-#Copyright (C) 2021  Qijun Gu
-#
-#This file is part of Screenshare.
-#
-#Screenshare is free software: you can redistribute it and/or modify
-#it under the terms of the GNU General Public License as published by
-#the Free Software Foundation, either version 3 of the License, or
-#(at your option) any later version.
-#
-#Screenshare is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
-#
-#You should have received a copy of the GNU General Public License
-#along with Screenshare. If not, see <https://www.gnu.org/licenses/>.
-
 from flask import Flask, request, flash, session
 from flask_bootstrap import Bootstrap
 from flask.templating import render_template
@@ -28,15 +11,14 @@ app = Flask(__name__)
 app.secret_key = secret_key
 Bootstrap(app)
 
-###### general ##########################################
 @app.route('/')
 def welcome():
     session.clear()
     if len(screenlive.password) == 0 :
         session['access'] = True
-        return render_template("screen.html")
+        return render_template("videochat2.html")
     else :
-        return render_template("login.html")
+        return render_template("videochat2.html")
 
 @app.route('/login', methods = ['POST'])
 def login():
@@ -44,16 +26,16 @@ def login():
     session.clear()
     if len(screenlive.password) == 0 :
         session['access'] = True
-        return render_template("screen.html")
+        return render_template("videochat2.html")
 
     p = request.form["password"]
     if p == screenlive.password :
         session['access'] = True
-        return render_template("screen.html")
+        return render_template("videochat2.html")
     else :
         session.clear()
         flash("Wrong password")
-        return render_template("login.html")
+        return render_template("videochat2.html")
 
 @app.route('/screenfeed/', methods=["POST"])
 def screenfeed():
@@ -62,7 +44,6 @@ def screenfeed():
     else:
         redirect('/')
 
-### main ###
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--port", help="port, default 18331", type=int, default=18331)
